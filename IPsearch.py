@@ -1,9 +1,10 @@
-
-
+#!/usr/bin/env python
 import geoip2.database
+import socket
 import time
 import sys
 import os
+import urllib2
 
 if os.name in['nt','win32']:
 	os.system('cls')
@@ -12,12 +13,18 @@ else:
 repeat='yes'
 while repeat == 'yes' or repeat == 'yes':
 	try:
-		print "\n[*] Ip Address Tracker Location By Mizan [*] "
+		print "\n[*] Ip Address Tracker Location By p1d0f [*] "
 		print "[*] Powered By Zorgon Team 		 [*]\n"
-		inputIP=raw_input('[*] Ip Address : ')
+		inputIP=raw_input('[*] target host : ')
+		print "[*] connecting to Internet ...."
+		time.sleep(2)
+		urllib2.urlopen("http://lb-192-30-255-113-sea.github.com", timeout=5)
+		print "[*] Internet Connected [*]"
+		dnsdomain=socket.gethostbyname(inputIP)
+		print "[*] IP address : ",dnsdomain
 		reader=geoip2.database.Reader('database/GeoLite2-City.mmdb')
 		#isp=geoip2.database.Reader('database/GeoIP2-ISP.mmdb')
-		response=reader.city("%s" % (inputIP))
+		response=reader.city("%s" % (dnsdomain))
 		city=response.country.name
 		code=response.country.iso_code
 		city2=response.country.name
@@ -43,7 +50,7 @@ while repeat == 'yes' or repeat == 'yes':
 			time.sleep(1)
 			print "[*] Searching ISP Connected ..."
 		ispa=geoip2.database.Reader('database/GeoIP2-ISP.mmdb')
-		connect=ispa.isp("%s" % (inputIP))
+		connect=ispa.isp("%s" % (dnsdomain))
 		isp1=connect.autonomous_system_number
 		isp2=connect.autonomous_system_organization
 		isp3=connect.isp
@@ -61,6 +68,12 @@ while repeat == 'yes' or repeat == 'yes':
 	except KeyboardInterrupt:
 		print "\n[*] CTRL+C Activated"
 		sys.exit()
+	except urllib2.URLError as err:
+		print "[*] Internet Diconnected [*]"
+		sys.exit()
 	except:
+		#time.sleep(1)
 		print "[*] Not Found Location"
-		
+		time.sleep(2)
+			
+

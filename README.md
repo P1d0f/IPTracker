@@ -1,7 +1,7 @@
 # IPTracker
 Search Location By IP Address
 
-Author By P1D0f
+Author By P1d0f
 
 This Tool is searching Location By IP Address 
 
